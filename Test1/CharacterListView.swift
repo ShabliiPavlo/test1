@@ -9,41 +9,43 @@ import SwiftUI
 
 struct CharacterListView: View {
     @StateObject private var viewModel = CharacterViewModel()
-        
-        var body: some View {
-            VStack {
-                List(viewModel.characters, id: \.id) { character in
-                    Button(action: {
-                        viewModel.selectedCharacter = character
-                    }) {
-                        Text(character.name)
-                            .font(.headline)
-                    }
+    @EnvironmentObject private var coordinator: Coordinator
+    
+    var body: some View {
+        VStack {
+            List(viewModel.characters, id: \.id) { character in
+                Button(action: {
+                    coordinator.presentDetails(character: character)
+                }) {
+                    Text(character.name)
+                        .font(.headline)
                 }
-                
-                HStack {
-                    Button("Previous") {
-                        viewModel.loadPreviousPage()
-                    }
-                    .disabled(!viewModel.hasPreviousPage)
-
-                    Spacer()
-
-                    Button("Next") {
-                        viewModel.loadNextPage()
-                    }
-                    .disabled(!viewModel.hasNextPage)
+            }
+            
+            HStack {
+                Button("Previous") {
+                    viewModel.loadPreviousPage()
                 }
-                .padding()
+                .disabled(!viewModel.hasPreviousPage)
+
+                Spacer()
+
+                Button("Next") {
+                    viewModel.loadNextPage()
+                }
+                .disabled(!viewModel.hasNextPage)
             }
-            .sheet(item: $viewModel.selectedCharacter) { character in
-                CharacterDetailView(character: character)
-            }
-            .task {
-                await viewModel.loadCharacters()
-            }
+            .padding()
+        }
+        .task {
+            await viewModel.loadCharacters()
+        }
+        .sheet(item: $coordinator.sheet) { sheet in
+            coordinator.build(sheet: sheet)
         }
     }
+}
+
 #Preview {
     CharacterListView()
 }

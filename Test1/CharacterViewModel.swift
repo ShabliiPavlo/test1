@@ -24,12 +24,7 @@ class CharacterViewModel: ObservableObject {
 
     func loadCharacters() async {
         do {
-            let urlString = "https://rickandmortyapi.com/api/character/?page=\(currentPage)"
-            guard let url = URL(string: urlString) else { return }
-
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let result = try JSONDecoder().decode(CharacterResponse.self, from: data)
-
+            let result = try await NetworkManager.shared.fetchCharacters(page: currentPage)
             DispatchQueue.main.async {
                 self.characters = result.results
                 self.totalPages = result.info.pages
