@@ -12,17 +12,9 @@ struct CharacterDetailView: View {
     
     var body: some View {
         VStack {
+            AsyncImageView(imageURL: character.image)
+                .frame(width: 200, height: 200)
             
-            AsyncImage(url: URL(string: character.image)) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 200, height: 200)
-            } placeholder: {
-                ProgressView()
-            }
-            .padding()
-
             Text(character.name)
                 .font(.largeTitle)
                 .padding()
@@ -32,9 +24,7 @@ struct CharacterDetailView: View {
 
             Text("Species: \(character.species)")
                 .font(.title2)
-
         }
         .padding()
     }
 }
-
