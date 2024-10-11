@@ -14,9 +14,11 @@ struct CoordinatorView: View {
     var body: some View {
         NavigationStack(path: $coordinator.path) {
             CharacterListView()
-
         }
         .environmentObject(coordinator)
+        .sheet(item: $coordinator.sheet) { sheet in
+            coordinator.build(sheet: sheet)
+        }
     }
 }
 

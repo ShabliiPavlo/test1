@@ -12,18 +12,23 @@ struct CharacterDetailView: View {
     
     var body: some View {
         VStack {
-            AsyncImageView(imageURL: character.image)
-                .frame(width: 200, height: 200)
-            
-            Text(character.name)
-                .font(.largeTitle)
+           
+//            AsyncImageView(imageURL: character.image)
+//                .frame(width: 200, height: 200)
+//            
+//            Text(character.name)
+//                .font(.largeTitle)
+//                .padding()
+//
+//            Text("Status: \(character.status)")
+//                .font(.title2)
+//            
+//            Text("Species: \(character.species)")
+//                .font(.title2)
+//
+            Text("Location: \(character.location.name)")
+                .font(.title3)
                 .padding()
-
-            Text("Status: \(character.status)")
-                .font(.title2)
-
-            Text("Species: \(character.species)")
-                .font(.title2)
         }
         .padding()
     }

@@ -14,11 +14,31 @@ struct CharacterListView: View {
     var body: some View {
         VStack {
             List(viewModel.characters, id: \.id) { character in
-                Button(action: {
-                    coordinator.presentDetails(character: character)
-                }) {
-                    Text(character.name)
-                        .font(.headline)
+                HStack {
+            
+                    AsyncImageView(imageURL: character.image)
+                        .frame(width: 50, height: 50)
+                        .clipShape(Circle())
+                    
+                    VStack(alignment: .leading) {
+                        
+                        Text(character.name)
+                            .font(.headline)
+                        
+                        Text("Status: \(character.status)")
+                            .font(.subheadline)
+                        
+                        Text("Species: \(character.species)")
+                            .font(.subheadline)
+                    }
+                    Spacer()
+                    
+                    Button(action: {
+                        coordinator.showSheet(type: .details(character))
+                    }) {
+                        Text("Location")
+                            .foregroundColor(.blue)
+                    }
                 }
             }
             
@@ -45,6 +65,7 @@ struct CharacterListView: View {
         }
     }
 }
+
 
 #Preview {
     CharacterListView()

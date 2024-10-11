@@ -18,10 +18,15 @@ class AsyncImageViewModel: ObservableObject {
     }
     
     func loadImage() async {
-        do {
-            self.image = try await imageLoader.downloadImage(imageURLString: imageURL)
-        } catch {
-            print("Failed to load image: \(error)")
+            do {
+                let loadedImage = try await imageLoader.downloadImage(imageURLString: imageURL)
+                
+                await MainActor.run {
+                    self.image = loadedImage
+                }
+                
+            } catch {
+                print("Failed to load image: \(error)")
+            }
         }
     }
-}

@@ -13,6 +13,11 @@ struct Character: Identifiable, Codable {
     let status: String
     let species: String
     let image: String
+    let location: Location
+}
+
+struct Location: Codable {
+    let name: String
 }
 
 struct CharacterResponse: Codable {

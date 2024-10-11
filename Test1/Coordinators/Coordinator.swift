@@ -7,10 +7,15 @@
 
 import SwiftUI
 
-enum Sheet: String, Identifiable {
-    case details
+enum Sheet: Identifiable {
+    
+    case details(Character)
+    
     var id: String {
-        self.rawValue
+        switch self {
+        case .details(_):
+            return "deteils"
+        }
     }
 }
 
@@ -18,20 +23,20 @@ class Coordinator: ObservableObject {
     
     @Published var path = NavigationPath()
     @Published var sheet: Sheet?
+    
     @Published var selectedCharacter: Character?
     
-    func presentDetails(character: Character) {
-        selectedCharacter = character
-        sheet = .details
+    
+    func showSheet(type: Sheet) {
+        sheet = type
+
     }
     
     @ViewBuilder
     func build(sheet: Sheet) -> some View {
         switch sheet {
-        case .details:
-            if let character = selectedCharacter {
-                CharacterDetailView(character: character)
-            }
+        case .details(let char):
+            CharacterDetailView(character: char)
         }
     }
 }
