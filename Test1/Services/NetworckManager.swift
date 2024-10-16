@@ -19,9 +19,26 @@ class NetworkManager {
             throw URLError(.badURL)
         }
 
-        let (data, _) = try await URLSession.shared.data(from: url)
-        let characterResponse = try JSONDecoder().decode(CharacterResponse.self, from: data)
-        
-        return characterResponse
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let characterResponse = try JSONDecoder().decode(CharacterResponse.self, from: data)
+            return characterResponse
+        } catch {
+            throw URLError(.cannotDecodeContentData)
+        }
+    }
+    
+    func fetchLocation(from url: String) async throws -> LocationDetails {
+        guard let url = URL(string: url) else {
+            throw URLError(.badURL)
+        }
+
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let locationDetails = try JSONDecoder().decode(LocationDetails.self, from: data)
+            return locationDetails
+        } catch {
+            throw URLError(.cannotDecodeContentData)
+        }
     }
 }

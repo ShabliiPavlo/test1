@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum Sheet: Identifiable {
+enum Page: Identifiable, Hashable {
     
     case details(Character)
     
@@ -22,19 +22,14 @@ enum Sheet: Identifiable {
 class Coordinator: ObservableObject {
     
     @Published var path = NavigationPath()
-    @Published var sheet: Sheet?
     
-    @Published var selectedCharacter: Character?
-    
-    
-    func showSheet(type: Sheet) {
-        sheet = type
-
+    func push(_ page:Page) {
+        path.append(page)
     }
-    
+
     @ViewBuilder
-    func build(sheet: Sheet) -> some View {
-        switch sheet {
+    func build(page: Page) -> some View {
+        switch page {
         case .details(let char):
             CharacterDetailView(character: char)
         }

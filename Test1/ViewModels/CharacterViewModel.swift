@@ -25,7 +25,7 @@ class CharacterViewModel: ObservableObject {
     func loadCharacters() async {
         do {
             let result = try await NetworkManager.shared.fetchCharacters(page: currentPage)
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.characters = result.results
                 self.totalPages = result.info.pages
             }

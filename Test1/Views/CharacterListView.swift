@@ -14,31 +14,8 @@ struct CharacterListView: View {
     var body: some View {
         VStack {
             List(viewModel.characters, id: \.id) { character in
-                HStack {
-            
-                    AsyncImageView(imageURL: character.image)
-                        .frame(width: 50, height: 50)
-                        .clipShape(Circle())
-                    
-                    VStack(alignment: .leading) {
-                        
-                        Text(character.name)
-                            .font(.headline)
-                        
-                        Text("Status: \(character.status)")
-                            .font(.subheadline)
-                        
-                        Text("Species: \(character.species)")
-                            .font(.subheadline)
-                    }
-                    Spacer()
-                    
-                    Button(action: {
-                        coordinator.showSheet(type: .details(character))
-                    }) {
-                        Text("Location")
-                            .foregroundColor(.blue)
-                    }
+                CharInfoView(character: character) {
+                    coordinator.push(.details(character))
                 }
             }
             
@@ -60,15 +37,43 @@ struct CharacterListView: View {
         .task {
             await viewModel.loadCharacters()
         }
-        .sheet(item: $coordinator.sheet) { sheet in
-            coordinator.build(sheet: sheet)
-        }
     }
 }
 
-
 #Preview {
     CharacterListView()
+}
+
+struct CharInfoView: View {
+    var character: Character
+    var action: () -> Void
+    
+    var body: some View {
+        HStack {
+            AsyncImageView(imageURL: character.image)
+                .frame(width: 50, height: 50)
+                .clipShape(Circle())
+            
+            VStack(alignment: .leading) {
+                Text(character.name)
+                    .font(.headline)
+                
+                Text("Status: \(character.status)")
+                    .font(.subheadline)
+                
+                Text("Species: \(character.species)")
+                    .font(.subheadline)
+            }
+            Spacer()
+            
+            Button(action: {
+                action()
+            }) {
+                Text("Location")
+                    .foregroundColor(.blue)
+            }
+        }
+    }
 }
 
 

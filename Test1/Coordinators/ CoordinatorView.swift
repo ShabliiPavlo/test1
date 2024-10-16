@@ -12,14 +12,14 @@ struct CoordinatorView: View {
     @StateObject private var coordinator = Coordinator()
     
     var body: some View {
-        NavigationStack(path: $coordinator.path) {
-            CharacterListView()
-        }
-        .environmentObject(coordinator)
-        .sheet(item: $coordinator.sheet) { sheet in
-            coordinator.build(sheet: sheet)
-        }
-    }
+           NavigationStack(path: $coordinator.path) {
+               CharacterListView()
+                   .navigationDestination(for: Page.self) { character in
+                       coordinator.build(page: character)
+                   }
+           }
+           .environmentObject(coordinator)
+       }
 }
 
 #Preview {

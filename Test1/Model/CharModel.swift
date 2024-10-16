@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Character: Identifiable, Codable {
+struct Character: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
     let status: String
@@ -16,8 +16,9 @@ struct Character: Identifiable, Codable {
     let location: Location
 }
 
-struct Location: Codable {
+struct Location: Codable, Hashable {
     let name: String
+    let url: String
 }
 
 struct CharacterResponse: Codable {
@@ -27,4 +28,12 @@ struct CharacterResponse: Codable {
 
     let info: Info
     let results: [Character]
+}
+
+struct LocationDetails: Identifiable, Codable {
+    let id: Int
+    let name: String
+    let type: String
+    let dimension: String
+    let residents: [String]
 }
